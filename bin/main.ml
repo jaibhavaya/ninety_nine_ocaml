@@ -6,11 +6,10 @@ let rec last list =
   | _ :: tail -> last tail
 
 let () =
-  let _ = match last [4;2] with
+  let list = [4;2] in
+  match last list with
     | Some 2 -> print_endline "Last item test passed"
     | _ -> print_endline "Last item test failed"
-  in
-  ()
 
 (* 2. last two items *)
 let rec last_two list =
@@ -34,5 +33,61 @@ let () =
  let list = [1; 2; 3; 4] in
   match at 2 list with
       | Some 3 -> print_endline "Item at k test passed"
-      | _ -> print_endline "Item at k  test failed"
+      | _ -> print_endline "Item at k test failed"
+
+(* 4. length of list *)
+let length list =
+  let rec aux n = function
+    | [] -> n
+    | _ :: t -> aux (n+1) t
+  in
+  aux 0 list
+
+let () =
+ let list = [1; 2; 3; 4] in
+  match length list with
+      | 4 -> print_endline "Length of list test passed"
+      | _ -> print_endline "Length of list test failed"
+
+(* 5. reverse list *)
+let reverse list =
+  let rec aux output = function
+  | [] -> output
+  | x :: tail -> aux (x :: output) tail
+  in
+  aux [] list
+
+let () =
+ let list = [1; 2; 3; 4] in
+  match reverse list with
+      | [4;3;2;1] -> print_endline "Reverse list test passed"
+      | _ -> print_endline "Reverse list test failed"
+
+(* 6. palindrome *)
+let palindrome list =
+  list = reverse list
+
+let () =
+ let list = [1; 2; 3; 4] in
+  match palindrome list with
+      | false -> print_endline "Palindrome false test passed"
+      | _ -> print_endline "Palindrome false test failed"
+
+(* run-length encoding *)
+let encode list =
+  let rec aux count output = function
+    | [] -> []
+    | [x] -> (count + 1, x) :: output
+    | a :: ((b :: _) as t) -> if a = b then aux (count + 1) output t
+                              else aux 0 ((count + 1, a) :: output) t in
+
+  reverse (aux 0 [] list)
+
+let () =
+ let list = ["a"; "a"; "b"; "c"; "d"; "d"; "d"] in
+ let expected = [(2, "a"); (1, "b"); (1, "c"); (3, "d")] in
+  match encode list with
+      | result when result = expected -> print_endline "Run-Length Encode test passed"
+      | _ -> print_endline "Run-Length Encode test failed"
+
 
