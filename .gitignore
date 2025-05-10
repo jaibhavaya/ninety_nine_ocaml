@@ -1,0 +1,36 @@
+# OCaml build artifacts
+_build/
+*.cmx
+*.cmo
+*.cmi
+*.cma
+*.cmxa
+*.cmxs
+*.o
+*.a
+*.so
+*.annot
+*.cmt
+*.cmti
+
+# Dune build directories
+.merlin
+.bsb.lock
+dune-project.merged
+.dune
+
+# OPAM local switch
+_opam/
+
+# Editor and OS files
+*~
+\#*\#
+.\#*
+.*.swp
+.DS_Store
+.vscode/
+.idea/
+
+# Binary executables (multiple approaches)
+# Explicitly ignore any file without extension (often binaries)
+exec_*
