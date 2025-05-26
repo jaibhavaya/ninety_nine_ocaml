@@ -73,7 +73,7 @@ let () =
       | false -> print_endline "Palindrome false test passed"
       | _ -> print_endline "Palindrome false test failed"
 
-(* run-length encoding *)
+(* 7. run-length encoding *)
 let encode list =
   let rec aux count output = function
     | [] -> []
@@ -89,5 +89,43 @@ let () =
   match encode list with
       | result when result = expected -> print_endline "Run-Length Encode test passed"
       | _ -> print_endline "Run-Length Encode test failed"
+
+
+(* 8. modified run-length encoding *)
+type 'a rle =
+  | One of 'a
+  | Many of int * 'a
+
+let modified_encode list =
+  let create_tuple cnt elem =
+    if cnt = 1 then One elem
+    else Many (cnt, elem) in
+  let rec aux count output = function
+    | [] -> []
+    | [x] -> (create_tuple (count + 1) x) :: output
+    | a :: ((b :: _) as t) -> if a = b then aux (count + 1) output t
+                              else aux 0 ((create_tuple (count +1) a) :: output) t in
+
+  reverse (aux 0 [] list)
+
+let () =
+ let list = ["a"; "a"; "b"; "c"; "d"; "d"; "d"] in
+ let expected = [Many (2, "a"); One "b"; One "c"; Many (3, "d")] in
+  match modified_encode list with
+      | result when result = expected -> print_endline "Run-Length Encode test passed"
+      | _ -> print_endline "Run-Length Encode test failed"
+
+
+(* 9. decode run-length encoding *)
+let decode list =
+  let rec many acc n e =
+    if n = 0 then acc else many (e :: acc) (n-1) e
+  in
+  let rec aux acc = function
+    | [] -> acc
+    | One e :: t -> aux (e :: acc) t
+    | Many(n, e) :: t -> aux (many acc n e) t
+  in
+  aux [] (reverse list)
 
 
